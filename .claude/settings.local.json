@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/artursynowiec/Dev/Projects/trainingApp_claude/training/.cursor*)",
+      "Bash(ls -la /Users/artursynowiec/Dev/Projects/trainingApp_claude/training/.github*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
