@@ -13,6 +13,10 @@ npm run lint     # Run ESLint
 
 No test framework is configured.
 
+## Docs-First Rule
+
+**IMPORTANT:** Before generating any code, always read the relevant documentation file in the `/docs` directory first. These docs define conventions, patterns, and decisions specific to this project that must be followed. If a relevant doc exists for the area you are working in (e.g., UI, API, database), consult it before writing any code.
+
 ## Architecture
 
 This is a **Next.js 16 App Router** project with TypeScript and Tailwind CSS v4.
