@@ -17,6 +17,13 @@ No test framework is configured.
 
 **IMPORTANT:** Before generating any code, always read the relevant documentation file in the `/docs` directory first. These docs define conventions, patterns, and decisions specific to this project that must be followed. If a relevant doc exists for the area you are working in (e.g., UI, API, database), consult it before writing any code.
 
+### Coding Standards Docs
+
+| Area | Doc |
+|------|-----|
+| Data fetching, database queries, user data isolation | [`docs/data-fetching.md`](docs/data-fetching.md) |
+| UI components, styling, layout conventions | [`docs/ui.md`](docs/ui.md) |
+
 ## Architecture
 
 This is a **Next.js 16 App Router** project with TypeScript and Tailwind CSS v4.

@@ -1,9 +1,6 @@
-'use server';
-
 import { db } from '@/lib/db';
 import { workouts, workoutExercises, exercises, sets } from '@/src/db/schema';
 import { eq, and, gte, lt } from 'drizzle-orm';
-import { auth } from '@clerk/nextjs/server';
 
 export type WorkoutWithDetails = {
   id: number;
@@ -25,10 +22,10 @@ export type WorkoutWithDetails = {
   }[];
 };
 
-export async function getWorkoutsForDate(date: string): Promise<WorkoutWithDetails[]> {
-  const { userId } = await auth();
-  if (!userId) return [];
-
+export async function getWorkoutsForDate(
+  userId: string,
+  date: string,
+): Promise<WorkoutWithDetails[]> {
   const start = new Date(`${date}T00:00:00.000Z`);
   const end = new Date(`${date}T23:59:59.999Z`);
 
@@ -47,12 +44,11 @@ export async function getWorkoutsForDate(date: string): Promise<WorkoutWithDetai
       and(
         eq(workouts.userId, userId),
         gte(workouts.startedAt, start),
-        lt(workouts.startedAt, end)
-      )
+        lt(workouts.startedAt, end),
+      ),
     )
     .orderBy(workouts.createdAt, workoutExercises.order, sets.setNumber);
 
-  // Group nested results
   const workoutMap = new Map<number, WorkoutWithDetails>();
 
   for (const row of rows) {

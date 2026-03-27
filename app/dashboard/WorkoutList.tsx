@@ -1,24 +1,20 @@
 'use client';
 
-import { useState, useTransition, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-import { getWorkoutsForDate, WorkoutWithDetails } from './actions';
+import { WorkoutWithDetails } from '@/data/workouts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 
-export default function WorkoutList() {
-  const today = format(new Date(), 'yyyy-MM-dd');
-  const [date, setDate] = useState(today);
-  const [workouts, setWorkouts] = useState<WorkoutWithDetails[]>([]);
-  const [isPending, startTransition] = useTransition();
+type Props = {
+  workouts: WorkoutWithDetails[];
+  date: string;
+  today: string;
+};
 
-  useEffect(() => {
-    startTransition(async () => {
-      const data = await getWorkoutsForDate(date);
-      setWorkouts(data);
-    });
-  }, [date]);
+export default function WorkoutList({ workouts, date, today }: Props) {
+  const router = useRouter();
 
   return (
     <div className="space-y-6">
@@ -31,21 +27,17 @@ export default function WorkoutList() {
           type="date"
           value={date}
           max={today}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => router.push(`/dashboard?date=${e.target.value}`)}
         />
       </div>
 
-      {isPending && (
-        <p className="text-sm text-zinc-400">Loading...</p>
-      )}
-
-      {!isPending && workouts.length === 0 && (
+      {workouts.length === 0 && (
         <Card className="px-6 py-10 text-center">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">No workouts logged for this date.</p>
         </Card>
       )}
 
-      {!isPending && workouts.map((workout) => (
+      {workouts.map((workout) => (
         <Card key={workout.id}>
           <CardHeader>
             <CardTitle>{workout.name ?? 'Workout'}</CardTitle>
