@@ -22,7 +22,9 @@ No test framework is configured.
 | Area | Doc |
 |------|-----|
 | Data fetching, database queries, user data isolation | [`docs/data-fetching.md`](docs/data-fetching.md) |
+| Data mutations, Server Actions, Zod validation | [`docs/data-mutation.md`](docs/data-mutation.md) |
 | UI components, styling, layout conventions | [`docs/ui.md`](docs/ui.md) |
+| Authentication, user identity, route protection | [`docs/auth.md`](docs/auth.md) |
 
 ## Architecture
 
