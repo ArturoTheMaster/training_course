@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { WorkoutWithDetails } from '@/data/workouts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 type Props = {
@@ -29,6 +30,9 @@ export default function WorkoutList({ workouts, date, today }: Props) {
           max={today}
           onChange={(e) => router.push(`/dashboard?date=${e.target.value}`)}
         />
+        <Button onClick={() => router.push(`/dashboard/workout/new?date=${date}`)}>
+          New workout
+        </Button>
       </div>
 
       {workouts.length === 0 && (
@@ -40,7 +44,15 @@ export default function WorkoutList({ workouts, date, today }: Props) {
       {workouts.map((workout) => (
         <Card key={workout.id}>
           <CardHeader>
-            <CardTitle>{workout.name ?? 'Workout'}</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>{workout.name ?? 'Workout'}</CardTitle>
+              <Badge
+                variant={workout.completedAt ? 'default' : 'secondary'}
+                className={!workout.completedAt ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : ''}
+              >
+                {workout.completedAt ? 'Finished' : 'In progress'}
+              </Badge>
+            </div>
             {workout.startedAt && (
               <p className="mt-0.5 text-xs text-zinc-400">
                 {format(new Date(workout.startedAt), 'HH:mm')}

@@ -97,3 +97,11 @@ export async function getWorkoutsForDate(
 
   return Array.from(workoutMap.values());
 }
+
+export async function createWorkout(userId: string, name: string, startedAt: Date) {
+  const [workout] = await db
+    .insert(workouts)
+    .values({ userId, name, startedAt })
+    .returning();
+  return workout;
+}

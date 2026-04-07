@@ -34,8 +34,8 @@ export default function RootLayout({
         <ClerkProvider>
           <header>
             <Show when="signed-out">
-              <SignInButton mode="modal" />
-              <SignUpButton mode="modal" />
+              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard" />
+              <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard" />
             </Show>
             <Show when="signed-in">
               <UserButton />
