@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createWorkoutAction } from "./actions";
 
-export default function NewWorkoutPage() {
+function NewWorkoutForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
@@ -103,5 +103,13 @@ export default function NewWorkoutPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function NewWorkoutPage() {
+  return (
+    <Suspense>
+      <NewWorkoutForm />
+    </Suspense>
   );
 }
