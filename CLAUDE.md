@@ -25,6 +25,7 @@ No test framework is configured.
 | Data mutations, Server Actions, Zod validation | [`docs/data-mutation.md`](docs/data-mutation.md) |
 | UI components, styling, layout conventions | [`docs/ui.md`](docs/ui.md) |
 | Authentication, user identity, route protection | [`docs/auth.md`](docs/auth.md) |
+| Routing conventions, protected routes, middleware | [`docs/routing.md`](docs/routing.md) |
 
 ## Architecture
 
