@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { WorkoutWithDetails } from '@/data/workouts';
@@ -42,7 +43,8 @@ export default function WorkoutList({ workouts, date, today }: Props) {
       )}
 
       {workouts.map((workout) => (
-        <Card key={workout.id}>
+        <Link key={workout.id} href={`/dashboard/workout/${workout.id}`} className="block">
+        <Card className="cursor-pointer transition-shadow hover:shadow-md">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>{workout.name ?? 'Workout'}</CardTitle>
@@ -101,6 +103,7 @@ export default function WorkoutList({ workouts, date, today }: Props) {
             ))}
           </div>
         </Card>
+        </Link>
       ))}
     </div>
   );
