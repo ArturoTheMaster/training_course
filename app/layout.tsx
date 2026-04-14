@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ClerkProvider, SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -34,8 +35,12 @@ export default function RootLayout({
         <ClerkProvider>
           <header>
             <Show when="signed-out">
-              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard" />
-              <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard" />
+              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button variant="outline">Sign In</Button>
+              </SignInButton>
+              <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button>Sign Up</Button>
+              </SignUpButton>
             </Show>
             <Show when="signed-in">
               <UserButton />
