@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ClerkProvider, SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -28,11 +29,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", inter.variable)}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}})();`,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider>
-          <header>
+          <header className="flex items-center justify-end px-4 py-2">
             <Show when="signed-out">
               <SignInButton mode="modal" fallbackRedirectUrl="/dashboard" />
               <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard" />
@@ -40,6 +48,7 @@ export default function RootLayout({
             <Show when="signed-in">
               <UserButton />
             </Show>
+            <ThemeToggle />
           </header>
           {children}
         </ClerkProvider>
