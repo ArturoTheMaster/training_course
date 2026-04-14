@@ -4,6 +4,7 @@ import { ClerkProvider, SignInButton, SignUpButton, Show, UserButton } from "@cl
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -42,8 +43,12 @@ export default function RootLayout({
         <ClerkProvider>
           <header className="flex items-center justify-end px-4 py-2">
             <Show when="signed-out">
-              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard" />
-              <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard" />
+              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button variant="outline">Sign In</Button>
+              </SignInButton>
+              <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button>Sign Up</Button>
+              </SignUpButton>
             </Show>
             <Show when="signed-in">
               <UserButton />
