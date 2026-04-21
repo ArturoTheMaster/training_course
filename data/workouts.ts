@@ -1,6 +1,7 @@
 import { db } from '@/lib/db';
 import { workouts, workoutExercises, exercises, sets } from '@/src/db/schema';
-import { eq, and, gte, lt } from 'drizzle-orm';
+import { eq, and, gte, lt, sql } from 'drizzle-orm';
+import type { Workout } from '@/src/db/schema';
 
 export type WorkoutWithDetails = {
   id: number;
@@ -111,6 +112,72 @@ export async function getWorkoutById(userId: string, workoutId: number) {
     .select()
     .from(workouts)
     .where(and(eq(workouts.id, workoutId), eq(workouts.userId, userId)));
+  return workout ?? null;
+}
+
+export async function getWorkoutWithDetails(
+  userId: string,
+  workoutId: number,
+): Promise<WorkoutWithDetails | null> {
+  const rows = await db
+    .select({
+      workout: workouts,
+      workoutExercise: workoutExercises,
+      exercise: exercises,
+      set: sets,
+    })
+    .from(workouts)
+    .leftJoin(workoutExercises, eq(workoutExercises.workoutId, workouts.id))
+    .leftJoin(exercises, eq(exercises.id, workoutExercises.exerciseId))
+    .leftJoin(sets, eq(sets.workoutExerciseId, workoutExercises.id))
+    .where(and(eq(workouts.id, workoutId), eq(workouts.userId, userId)))
+    .orderBy(workoutExercises.order, sets.setNumber);
+
+  if (rows.length === 0) return null;
+
+  const w = rows[0].workout;
+  const result: WorkoutWithDetails = {
+    id: w.id,
+    name: w.name,
+    startedAt: w.startedAt,
+    completedAt: w.completedAt,
+    createdAt: w.createdAt,
+    exercises: [],
+  };
+
+  for (const row of rows) {
+    if (!row.workoutExercise || !row.exercise) continue;
+    const we = row.workoutExercise;
+    let weEntry = result.exercises.find((e) => e.id === we.id);
+    if (!weEntry) {
+      weEntry = {
+        id: we.id,
+        order: we.order,
+        exercise: { id: row.exercise.id, name: row.exercise.name, muscleGroup: row.exercise.muscleGroup },
+        sets: [],
+      };
+      result.exercises.push(weEntry);
+    }
+    if (row.set) {
+      weEntry.sets.push({
+        id: row.set.id,
+        setNumber: row.set.setNumber,
+        reps: row.set.reps,
+        weightKg: row.set.weightKg,
+        durationSeconds: row.set.durationSeconds,
+      });
+    }
+  }
+
+  return result;
+}
+
+export async function completeWorkout(userId: string, workoutId: number): Promise<Workout | null> {
+  const [workout] = await db
+    .update(workouts)
+    .set({ completedAt: sql`now()` })
+    .where(and(eq(workouts.id, workoutId), eq(workouts.userId, userId)))
+    .returning();
   return workout ?? null;
 }
 

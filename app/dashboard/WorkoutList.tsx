@@ -56,7 +56,7 @@ export default function WorkoutList({ workouts, date, today }: Props) {
               </Badge>
             </div>
             {workout.startedAt && (
-              <p className="mt-0.5 text-xs text-zinc-400">
+              <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
                 {format(new Date(workout.startedAt), 'HH:mm')}
                 {workout.completedAt && (
                   <> — {format(new Date(workout.completedAt), 'HH:mm')}</>
@@ -78,7 +78,7 @@ export default function WorkoutList({ workouts, date, today }: Props) {
                 </div>
 
                 {we.sets.length > 0 && (
-                  <table className="mt-3 w-full text-xs text-zinc-500 dark:text-zinc-400">
+                  <table className="mt-3 w-full text-xs text-zinc-600 dark:text-zinc-400">
                     <thead>
                       <tr className="text-left">
                         <th className="pb-1.5 font-medium">Set</th>

@@ -1,13 +1,14 @@
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { getWorkoutById } from "@/data/workouts";
-import EditWorkoutForm from "./edit-workout-form";
+import { getWorkoutWithDetails } from "@/data/workouts";
+import { getAllExercises } from "@/data/exercises";
+import WorkoutLogger from "./workout-logger";
 
 type Props = {
   params: Promise<{ workoutId: string }>;
 };
 
-export default async function EditWorkoutPage({ params }: Props) {
+export default async function WorkoutPage({ params }: Props) {
   const { workoutId } = await params;
   const id = parseInt(workoutId, 10);
 
@@ -16,8 +17,12 @@ export default async function EditWorkoutPage({ params }: Props) {
   const { userId } = await auth();
   if (!userId) notFound();
 
-  const workout = await getWorkoutById(userId, id);
+  const [workout, allExercises] = await Promise.all([
+    getWorkoutWithDetails(userId, id),
+    getAllExercises(),
+  ]);
+
   if (!workout) notFound();
 
-  return <EditWorkoutForm workout={workout} />;
+  return <WorkoutLogger workout={workout} allExercises={allExercises} />;
 }
